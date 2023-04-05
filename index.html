@@ -9,9 +9,13 @@
     <title>Campo Minado</title>
 </head>
 <body>
-
-    <h1>Minas: <span id="mines-count">0</span></h1>
-
+    <div class="wrapper">
+        <h1>Minas: <span id="mines-count">0</span></h1>
+        <br>
+        <p id="cronometro">00:00:00</p>
+        <button class="wrapper__button" onclick="iniciarCronometro()">Iniciar</button>
+        <button class="wrapper__button"  onclick="pararCronometro()">Parar</button>
+    </div>
     <div id="board">
     </div>
     

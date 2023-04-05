@@ -2,7 +2,7 @@ var board = [];
 var rows = 10;
 var columns = 10;
 
-var minesCount = 9;
+var minesCount = 20;
 var minesLocation = []; //id de onde vai ficar as bombas
 
 var tilesClicked = 0; //Clicar em todas menos nas bombas
@@ -151,7 +151,8 @@ function checkMine(r, c) {
   }
 
   if (tilesClicked == rows * columns - minesCount) {
-    document.getElementById("mines-count").innerText = "SEM MINAS";
+    document.getElementById("mines-count").innerText =
+      "PARABÉNS VOCÊ VENCEU!!!";
     gameOver = true;
   }
 }
@@ -164,4 +165,38 @@ function checkTile(r, c) {
     return 1;
   }
   return 0;
+}
+
+//Cronometro
+
+let tempo = 0;
+let cronometro;
+
+function atualizarCronometro() {
+  const horas = Math.floor(tempo / 3600);
+  const minutos = Math.floor((tempo % 3600) / 60);
+  const segundos = tempo % 60;
+  const tempoFormatado = `${horas.toString().padStart(2, "0")}:${minutos
+    .toString()
+    .padStart(2, "0")}:${segundos.toString().padStart(2, "0")}`;
+  document.getElementById("cronometro").textContent = tempoFormatado;
+}
+
+function iniciarCronometro() {
+  if (!cronometro) {
+    cronometro = setInterval(() => {
+      tempo++;
+      atualizarCronometro();
+    }, 1000);
+  }
+}
+
+function pararCronometro() {
+  if (cronometro) {
+    clearInterval(cronometro);
+    cronometro = null;
+  } else {
+    tempo = 0;
+    atualizarCronometro();
+  }
 }

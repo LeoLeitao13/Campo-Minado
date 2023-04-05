@@ -74,4 +74,16 @@ button{
     font-size: 30px;
     background-color: lightgray;
     border: none;
+    cursor: pointer;
+}
+button:hover{
+    background-color: rgb(190, 190, 190);
+}
+
+p{
+ font-size: 30px;
+}
+
+.wrapper__button{
+    margin: 0.5em;
 }
