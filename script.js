@@ -2,25 +2,20 @@ var board = [];
 var rows = 10;
 var columns = 10;
 
-var minesCount = 20;
+var minesCount = 5;
 var minesLocation = []; //id de onde vai ficar as bombas
 
 var tilesClicked = 0; //Clicar em todas menos nas bombas
 var flagEnabled = false;
 
 var gameOver = false;
+var firstClick = true;
 
 window.onload = function () {
   startGame();
 };
 
 function setMines() {
-  //   minesLocation.push("2-2");
-  //   minesLocation.push("2-3");
-  //   minesLocation.push("5-6");
-  //   minesLocation.push("3-4");
-  //   minesLocation.push("1-0");
-  //   minesLocation.push("8-8");
   let minesLeft = minesCount;
   while (minesLeft > 0) {
     let r = Math.floor(Math.random() * rows);
@@ -38,6 +33,7 @@ function startGame() {
   document.getElementById("mines-count").innerText = minesCount;
   document.getElementById("flag-button").addEventListener("click", setFlag);
   setMines();
+  iniciarCronometro();
 
   //populate o board
   for (let r = 0; r < rows; r++) {
@@ -70,6 +66,7 @@ function clickTile() {
   }
 
   let tile = this; //this refere ao click no tile
+
   if (flagEnabled) {
     if (tile.innerText == "") {
       tile.innerText = "🚩";
@@ -78,17 +75,33 @@ function clickTile() {
     }
     return;
   }
-  if (minesLocation.includes(tile.id)) {
-    alert("GAME OVER");
-    gameOver = true;
-    revealMines();
-    return;
-  }
 
-  let coords = tile.id.split("-"); //"0-0" => ["0","0"]
-  let r = parseInt(coords[0]);
-  let c = parseInt(coords[1]);
-  checkMine(r, c);
+  if (firstClick) {
+    firstClick = false;
+    let coords = tile.id.split("-");
+    let r = parseInt(coords[0]);
+    let c = parseInt(coords[1]);
+
+    // remove a bomba da célula clicada
+    minesLocation = minesLocation.filter((id) => id !== tile.id);
+
+    // redefine as minas aleatoriamente
+    setMines();
+
+    checkMine(r, c); // chama a função para a célula clicada
+  } else {
+    // demais cliques
+    if (minesLocation.includes(tile.id)) {
+      alert("GAME OVER");
+      gameOver = true;
+      revealMines();
+      return;
+    }
+    let coords = tile.id.split("-");
+    let r = parseInt(coords[0]);
+    let c = parseInt(coords[1]);
+    checkMine(r, c);
+  }
 }
 
 function revealMines() {
